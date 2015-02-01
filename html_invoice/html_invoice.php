@@ -71,8 +71,7 @@ class HtmlInvoice extends InvoiceTemplate {
 		
 		$font = isset($this->meta['settings']['inv_font_' . Configure::get("Blesta.language")]) ? $this->meta['settings']['inv_font_' . Configure::get("Blesta.language")] : null;
 
-		$this->pdf = new HtmlInvoicePdf("P", "px", $this->meta['paper_size'], true, 'UTF-8', false, $font);
-		
+		$this->pdf = new HtmlInvoicePdf("P", "px", $this->meta['paper_size'], true, 'UTF-8', false, $font);		
 		$this->html = new HtmlInvoiceHtm("P", "px", $this->meta['paper_size'], true, 'UTF-8', false, $font);
 		
 		// Set the meta data to use for this invoice

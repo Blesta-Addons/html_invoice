@@ -8,7 +8,7 @@ class TemplateFile {
 			$Header=null , $HtmlDir=null ,  $HtmlTitle=null ,  $RtlCss=null ,  $drawBackground=null , 
 			$drawLogo=null , $drawPaidWatermark=null , $drawInvoiceType=null , $drawInvoiceInfo=null , $drawReturnAddress=null ,  $drawAddress=null , 
 			$drawLineHeader=null , $drawInvoice=null , $SubTotals=null , $Taxes=null , $Totals=null , $PublicNotes=null , $drawPayments=null , 
-			$drawTerms=null , $Footer=null 
+			$drawTerms=null , $Footer=null , $PrintBtn=null , $DownloadBtn=null 
 		) 
 	{
 		/*
@@ -16,6 +16,23 @@ class TemplateFile {
 		NOTE , The $Header include all the header 
 		*
 		*/
+		$paid_watermark = '
+				<button type="button" class="btn btn-success btn-lg active" >
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '. Language::_("HtmlInvoice.watermark_paid", true).'
+				</button>';
+		$unpaid_watermark = '
+				<button type="button" class="btn btn-danger btn-lg active" >
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '. Language::_("HtmlInvoice.watermark_unpaid", true).'
+				</button>';
+		$download_btn = '
+				<button type="button" class="btn btn-info btn-lg " >
+					<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> '. Language::_("HtmlInvoice.download_invoice", true).'
+				</button>';
+		$print_btn = '
+				<button type="button" class="btn btn-info btn-lg" onclick="javascript:window.print();" >
+				  <span class="glyphicon glyphicon-print" aria-hidden="true"></span> '. Language::_("HtmlInvoice.print_invoice", true).'
+				</button>';
+				
 		$content = '
 		<!doctype html>
 		<html dir="'. $HtmlDir .'">
@@ -53,8 +70,11 @@ class TemplateFile {
 						</div>
 						<!-- / end client details section -->
 						<div class="row">
-								<div class="col-xs-3 col-xs-offset-9  text-right">								
-									'. ($drawPaidWatermark ? "<h1><span class='label label-success'>". $drawPaidWatermark ."</span></h1>" : "<h1><span class='label label-danger'>". Language::_("HtmlInvoice.watermark_unpaid", true) ."</span></h1>" ) .'
+								<div class="col-xs-12  text-right">								
+									'. ($drawPaidWatermark ? $paid_watermark : $unpaid_watermark ) .'
+									'. ($PrintBtn ? $print_btn : "" ) .'
+									'. ($DownloadBtn ? $download_btn : "" ) .'
+									
 								</div>
 						</div>
 						

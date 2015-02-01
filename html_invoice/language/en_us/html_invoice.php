@@ -30,4 +30,6 @@ $lang['HtmlInvoice.payments_applied_amount'] = "Amount Applied";
 $lang['HtmlInvoice.balance_heading'] = "Balance";
 $lang['HtmlInvoice.from'] = "From : ";
 $lang['HtmlInvoice.to'] = "Billed To : ";
+$lang['HtmlInvoice.print_invoice'] = "Print Invoice";
+$lang['HtmlInvoice.download_invoice'] = "download Invoice";
 ?>

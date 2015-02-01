@@ -33,16 +33,17 @@ class HtmlInvoiceHtm extends Html {
 	 * @var array An array of invoice data for this invoice
 	 */
 	public $invoice = array();
-	/**
-	 * @var array An array of transaction payment row options
-	 */
-	private $payment_options = array();
 
 	private $buffer; 
 	/**
 	 * @param boolean Whether to include the to address or not
 	 */
+	
+	// Change This if you want ***/
 	public $include_address = true;
+	public $show_print_btn = true;
+	public $show_payment_btn = true;
+	public $show_download_btn = false;
 	
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {
@@ -71,16 +72,13 @@ class HtmlInvoiceHtm extends Html {
 			$this->TemplateFile->FinalTemplate
 			(
 				$this->Header() , $this->HtmlDir() , $this->HtmlTitle() , $this->RtlCss() , $this->drawBackground() ,  
-				$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , 
-				$this->drawAddress() , $this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() ,
-				$this->drawPayments() ,  $this->drawTerms() ,  $this->Footer()  
+				$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , $this->drawAddress() , 
+				$this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() , $this->drawPayments() ,  
+				$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn()
 			)
 		);
 	}
 	
-	/**
-	 * Overwrite the default header that appears on each page of the PDF
-	 */
 	private function Header() {
 			
 		$buffer = '
@@ -120,9 +118,6 @@ class HtmlInvoiceHtm extends Html {
 		}
 	}
 
-	/**
-	 * Renders the background image onto the document
-	 */
 	private function drawBackground() {		
 		if (file_exists($this->meta['background'])) {
 		
@@ -163,9 +158,6 @@ class HtmlInvoiceHtm extends Html {
 		return Language::_("HtmlInvoice.type_" . $this->invoice->status, true) ;
 	}
 
-	/**
-	 * Renders the Invoice info section to the document, containing the invoice ID, client ID, date billed, and date due
-	 */
 	private function drawInvoiceInfo() {
 		$data = array(
 			array(
@@ -197,28 +189,19 @@ class HtmlInvoiceHtm extends Html {
 		return $buffer ;
 
 	}
-	
-	/**
-	 * Renders the tax ID Company section to the document
-	 */
+
 	private function drawTaxId() {		
 		if (isset($this->meta['tax_id']) && $this->meta['tax_id'] != "") {		
 			return Language::_("HtmlInvoice.tax_id", true) . " ". $this->meta['tax_id']; 
 		}
 	}
 	
-	/**
-	 * Renders the tax ID Client section to the document
-	 */
 	private function drawTaxIdClient() {		
 		if (isset($this->meta['tax_id']) && $this->meta['tax_id'] != "") {		
 			return Language::_("HtmlInvoice.client_tax_id", true) . " ". $this->invoice->client->settings['tax_id'] ; 
 		}
 	}	
 
-	/**
-	 * Renders the to address information
-	 */
 	private function drawAddress() {
 	
 		if ($this->include_address) {
@@ -248,10 +231,7 @@ class HtmlInvoiceHtm extends Html {
 		}
 		
 	}
-	
-	/**
-	 * Renders the return address information
-	 */
+
 	private function drawReturnAddress() {
 		if ($this->meta['display_companyinfo'] == "true") {
 			$buffer = '
@@ -270,10 +250,7 @@ class HtmlInvoiceHtm extends Html {
 			return $buffer ; 
 		}		
 	}	
-	
-	/**
-	 * Draws the paid text in the background of the invoice
-	 */
+
 	private function drawPaidWatermark() {
 		// Show paid watermark
 		if (!empty($this->meta['display_paid_watermark']) && $this->meta['display_paid_watermark'] == "true" && ($this->invoice->date_closed != null)) {			
@@ -281,9 +258,6 @@ class HtmlInvoiceHtm extends Html {
 		}
 	}	
 
-	/**
-	 * Renders the line items table heading
-	 */
 	private function drawLineHeader() {
 	
 		$buffer ="";
@@ -312,11 +286,8 @@ class HtmlInvoiceHtm extends Html {
 		return $buffer ;
 		
 	}
-	
-	/**
-	 * Draws a complete invoice
-	 */
-	public function drawInvoice() {
+
+	private function drawInvoice() {
 		
 		$buffer ="";
 		// Build line items
@@ -345,9 +316,6 @@ class HtmlInvoiceHtm extends Html {
 
 	}	
 
-	/**
-	 * Renders public notes and invoice tallies onto the document
-	 */
 	private function PublicNotes() {		
 		// Draw notes
 		if (!empty($this->invoice->note_public)) {
@@ -364,10 +332,7 @@ class HtmlInvoiceHtm extends Html {
 			return $buffer ;
 		}
 	}
-	
-	/**
-	 * Renders public notes and invoice tallies onto the document
-	 */
+
 	private function SubTotals() {
 
 		$buffer = Language::_("HtmlInvoice.subtotal_heading", true) .' : '. $this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options) .'<br />';
@@ -397,9 +362,6 @@ class HtmlInvoiceHtm extends Html {
 		
 	}	
 
-	/**
-	 * Renders the transaction payments/credits section onto the document
-	 */
 	private function drawPayments() {
 		if (!empty($this->meta['display_payments']) && $this->meta['display_payments'] == "true") {
 			// Set the payment rows
@@ -470,10 +432,7 @@ class HtmlInvoiceHtm extends Html {
 			return $buffer ;
 		}
 	}
-	
-	/**
-	 * Renders the terms of this document
-	 */
+
 	private function drawTerms() {
 		if (!empty($this->meta['terms'])){
 			$buffer ='	
@@ -487,9 +446,21 @@ class HtmlInvoiceHtm extends Html {
 			
 			return $buffer;			
 		}
-
 	}
 	
+	private function PrintBtn() {
+		if ($this->show_print_btn){
+			return true;	
+		}
+	}	
+	
+	private function DownloadBtn() {
+		if ($this->show_download_btn){
+			return true;	
+		}
+	}	
+		
+	// 
 	private function Footer() {
 	
 			$footer = "" ;
