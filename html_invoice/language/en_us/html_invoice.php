@@ -31,5 +31,8 @@ $lang['HtmlInvoice.balance_heading'] = "Balance";
 $lang['HtmlInvoice.from'] = "From : ";
 $lang['HtmlInvoice.to'] = "Billed To : ";
 $lang['HtmlInvoice.print_invoice'] = "Print Invoice";
-$lang['HtmlInvoice.download_invoice'] = "download Invoice";
+$lang['HtmlInvoice.download_invoice'] = "Download Invoice (PDF)";
+$lang['HtmlInvoice.pay_invoice'] = "Make Payment";
+$lang['HtmlInvoice.back'] = "Back to Client Area";
+$lang['HtmlInvoice.close'] = "Close Window";
 ?>

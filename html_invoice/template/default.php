@@ -1,4 +1,5 @@
 <?php
+
 class TemplateFile {
 	
 	private $content;
@@ -7,8 +8,8 @@ class TemplateFile {
 		(	
 			$Header=null , $HtmlDir=null ,  $HtmlTitle=null ,  $RtlCss=null ,  $drawBackground=null , 
 			$drawLogo=null , $drawPaidWatermark=null , $drawInvoiceType=null , $drawInvoiceInfo=null , $drawReturnAddress=null ,  $drawAddress=null , 
-			$drawLineHeader=null , $drawInvoice=null , $SubTotals=null , $Taxes=null , $Totals=null , $PublicNotes=null , $drawPayments=null , 
-			$drawTerms=null , $Footer=null , $PrintBtn=null , $DownloadBtn=null 
+			$drawLineHeader=null , $drawInvoice=null , $SubTotals=null , $Taxes=array() , $Totals=null , $PublicNotes=null , $drawPayments=null , 
+			$drawTerms=null , $Footer=null , $PrintBtn=null , $DownloadBtn=null , $PaymentBtn=null 
 		) 
 	{
 		/*
@@ -25,13 +26,36 @@ class TemplateFile {
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '. Language::_("HtmlInvoice.watermark_unpaid", true).'
 				</button>';
 		$download_btn = '
-				<button type="button" class="btn btn-info btn-lg " >
+				<button type="button" class="btn btn-info btn-lg " onclick="window.location.href=\''.$_SERVER['REQUEST_URI'].'/pdf/\'"> 
 					<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> '. Language::_("HtmlInvoice.download_invoice", true).'
 				</button>';
 		$print_btn = '
 				<button type="button" class="btn btn-info btn-lg" onclick="javascript:window.print();" >
 				  <span class="glyphicon glyphicon-print" aria-hidden="true"></span> '. Language::_("HtmlInvoice.print_invoice", true).'
 				</button>';
+		$payment_btn = '
+				<button type="button" class="btn btn-warning btn-lg" >
+				  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> '. Language::_("HtmlInvoice.pay_invoice", true).'
+				</button>';
+		$draw_terms = '
+				<div class="row">
+					<div class="col-xs-12">
+						<h3><span class="label label-default">'. Language::_("HtmlInvoice.terms_heading", true) .'</span></h3>
+						
+						<div class="well well-sm">'. nl2br($drawTerms) .'</div>						
+					</div>
+				</div>'; 
+				
+		$taxe_line = "";
+		
+		foreach ($Taxes as $Taxe) {
+			$taxe_line .='
+				<tr>
+					<th></th>
+					<th colspan="2" class="warning text-right"><h4>'. $Taxe['label'] .'</h4></th>
+					<th class="warning text-right"><h4>'. $Taxe['value'] .'</h4></th>
+				</tr>'; 
+		}	
 				
 		$content = '
 		<!doctype html>
@@ -70,11 +94,13 @@ class TemplateFile {
 						</div>
 						<!-- / end client details section -->
 						<div class="row">
-								<div class="col-xs-12  text-right">								
-									'. ($drawPaidWatermark ? $paid_watermark : $unpaid_watermark ) .'
+								<div class="col-xs-6 ">									
+									'. ($PaymentBtn ? $payment_btn : "" ) .'
 									'. ($PrintBtn ? $print_btn : "" ) .'
-									'. ($DownloadBtn ? $download_btn : "" ) .'
-									
+									'. ($DownloadBtn ? $download_btn : "" ) .'							
+								</div>						
+								<div class="col-xs-6 text-right">									
+									'. ($drawPaidWatermark ? $paid_watermark : $unpaid_watermark ) .'									
 								</div>
 						</div>
 						
@@ -89,6 +115,21 @@ class TemplateFile {
 							<tbody>
 								'. $drawInvoice .'
 							</tbody>
+							<tfoot>
+								<tr>
+									<th></th>
+									<th colspan="2" class="active text-right"><h4>'. Language::_("HtmlInvoice.subtotal_heading", true) .'</h4></th>
+									<th class="active text-right"><h4>'. $SubTotals .'</h4></th>
+								</tr>
+								'. $taxe_line .'
+								<tr>
+									<th></th>
+									<th colspan="2" class="info text-right"><h4>'. Language::_("HtmlInvoice.total_heading", true)  .'</h4></th>
+									<th class="info text-right"><h4>'. $Totals .'</h4></th>
+								</tr>								
+							</tfoot>							
+							
+							
 						</table>
 						
 						<div class="row ">
@@ -96,13 +137,7 @@ class TemplateFile {
 								
 							</div>
 							<div class="col-xs-4 text-right">
-								<p>
-									<strong>
-										'. $SubTotals .'
-										'. $Taxes .'
-										'. $Totals .'
-									</strong>
-								</p>
+
 							</div>
 						</div>
 						
@@ -117,9 +152,16 @@ class TemplateFile {
 						
 					</div>
 					<footer class="footer">		
-						'. $drawTerms .'
+						'. ($drawTerms ? $draw_terms : "" ).'
 						'. $Footer .'
-					</footer>	
+					</footer>
+					<nav>
+						<ul class="pager">
+							<li><a href="#"><span aria-hidden="true">&larr;</span> '. Language::_("HtmlInvoice.back", true) .'</a></li>
+							<li><a href="'.$_SERVER['REQUEST_URI'].'/pdf/">'. Language::_("HtmlInvoice.download_invoice", true) .'</a></li>
+							<li><a href="#">'. Language::_("HtmlInvoice.close", true) .'</a></li>
+						</ul>
+					</nav>					
 				</div>
 			</body>
 		</html>';

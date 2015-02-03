@@ -18,7 +18,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	/**
 	 * @var string The version of this template
 	 */
-	private static $version = "1.0.0";
+	private static $version = "1.5.0";
 	/**
 	 * @var string The authors of this template
 	 */
@@ -120,7 +120,12 @@ class HtmlInvoice extends InvoiceTemplate {
 	 * @param string $mime_type The mime_type to render ("application/pdf", "text/html", etc.)
 	 */
 	public function setMimeType($mime_type) {
-		$this->mime_type = $mime_type;
+		// print_r( basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
+		if(basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) == "pdf" ) 
+			$this->mime_type = "application/pdf";
+		else	
+			$this->mime_type = $mime_type;
+			
 	}
 	
 	/**

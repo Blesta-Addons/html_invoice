@@ -42,8 +42,8 @@ class HtmlInvoiceHtm extends Html {
 	// Change This if you want ***/
 	public $include_address = true;
 	public $show_print_btn = true;
-	public $show_payment_btn = true;
-	public $show_download_btn = false;
+	public $show_payment_btn = false;
+	public $show_download_btn = true;
 	
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {
@@ -74,7 +74,7 @@ class HtmlInvoiceHtm extends Html {
 				$this->Header() , $this->HtmlDir() , $this->HtmlTitle() , $this->RtlCss() , $this->drawBackground() ,  
 				$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , $this->drawAddress() , 
 				$this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() , $this->drawPayments() ,  
-				$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn()
+				$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn()
 			)
 		);
 	}
@@ -335,30 +335,31 @@ class HtmlInvoiceHtm extends Html {
 
 	private function SubTotals() {
 
-		$buffer = Language::_("HtmlInvoice.subtotal_heading", true) .' : '. $this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options) .'<br />';
+		// $buffer = Language::_("HtmlInvoice.subtotal_heading", true) ." : ". $this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options) ."\n";
 	
-		return $buffer ;
+		return $this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options) ;
 		
 	}
 	
 	private function Taxes() {
 
-		$buffer = '';
-	
-		foreach ($this->invoice->taxes as $tax) {
-			$buffer .= Language::_("HtmlInvoice.tax_heading", true, $tax->name, $tax->amount)  .' : '.   $this->CurrencyFormat->format($tax->tax_total, $this->invoice->currency, self::$standard_num_options) .'<br />';
+		$buffer = array();
+		$i = 0;
+		foreach ($this->invoice->taxes as $tax ) {
+			$buffer[$i]['label'] =   Language::_("HtmlInvoice.tax_heading", true, $tax->name, $tax->amount) ;
+			$buffer[$i]['value'] =  $this->CurrencyFormat->format($tax->tax_total, $this->invoice->currency, self::$standard_num_options) ;
+			$i++;
 		}
 		
-
 		return $buffer ;
 		
 	}
 	
 	private function Totals() {
 		
-		$buffer = Language::_("HtmlInvoice.total_heading", true)  .' : '.  $this->CurrencyFormat->format($this->invoice->total, $this->invoice->currency) .'<br />';
+		// $buffer = Language::_("HtmlInvoice.total_heading", true)  ." : ".  $this->CurrencyFormat->format($this->invoice->total, $this->invoice->currency) ."\n";
 
-		return $buffer ;
+		return $this->CurrencyFormat->format($this->invoice->total, $this->invoice->currency)  ;
 		
 	}	
 
@@ -435,16 +436,7 @@ class HtmlInvoiceHtm extends Html {
 
 	private function drawTerms() {
 		if (!empty($this->meta['terms'])){
-			$buffer ='	
-			<div class="row">
-				<div class="col-xs-12">
-					<h3><span class="label label-default">'. Language::_("HtmlInvoice.terms_heading", true) .'</span></h3>
-					
-					<div class="well well-sm">'. nl2br($this->meta['terms']) .'</div>						
-				</div>
-			</div>';
-			
-			return $buffer;			
+			return $this->meta['terms'] ;
 		}
 	}
 	
@@ -456,6 +448,12 @@ class HtmlInvoiceHtm extends Html {
 	
 	private function DownloadBtn() {
 		if ($this->show_download_btn){
+			return true;	
+		}
+	}
+
+	private function PaymentBtn() {
+		if ( ($this->show_payment_btn) && (empty($this->invoice->date_closed) )){
 			return true;	
 		}
 	}	
