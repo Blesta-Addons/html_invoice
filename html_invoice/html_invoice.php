@@ -42,7 +42,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	 */
 	private $mime_type;
 	
-	private static $template = "default" ;
+	private static $template = "default.php" ;
 	
 	/**
 	 * Loads the language to be used for this invoice
@@ -275,7 +275,8 @@ class HtmlInvoice extends InvoiceTemplate {
 		
 		switch ($this->mime_type) {
 			case "application/pdf":
-				$this->html->Output(self::$template);	
+				$this->html->Output(self::$template);
+				exit;
 				break;
 			case "download/pdf":
 				$this->pdf->Output($name . "." . $this->getFileExtension($this->mime_type), 'D');

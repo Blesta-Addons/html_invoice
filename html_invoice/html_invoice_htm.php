@@ -61,11 +61,10 @@ class HtmlInvoiceHtm extends Html {
 	}
 	
 
-	public function Output($template='default') {	
+	public function Output($template) {	
 		
-		if (file_exists(dirname(__FILE__) . DS . "template" . DS . $template .".php") ) {
-		
-			Loader::load(dirname(__FILE__) . DS . "template" . DS . $template .".php" );	
+		if (file_exists(dirname(__FILE__) . DS . "template" . DS . $template ) ) {		
+			Loader::load(dirname(__FILE__) . DS . "template" . DS . $template );	
 			$this->TemplateFile = new TemplateFile();
 			print_r(
 				$this->TemplateFile->FinalTemplate
@@ -76,9 +75,10 @@ class HtmlInvoiceHtm extends Html {
 					$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn()
 				)
 			);
-		
 		}		
-		throw new Exception("Template : " . $template . " not found");
+		else {
+			throw new Exception("Template : " . $template . " not found");
+		}	
 	}
 	
 	private function Header() {
