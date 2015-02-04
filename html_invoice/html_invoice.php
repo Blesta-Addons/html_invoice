@@ -18,7 +18,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	/**
 	 * @var string The version of this template
 	 */
-	private static $version = "2.0.0";
+	private static $version = "2.0.1";
 	/**
 	 * @var string The authors of this template
 	 */
