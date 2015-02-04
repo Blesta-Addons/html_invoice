@@ -46,13 +46,12 @@ class HtmlInvoiceHtm extends Html {
 	public $show_download_btn = true;
 	
 	
-	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {
-	
-
+	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {	
+			
 		Loader::loadModels($this, array("Companies", "Transactions"));
 		$company_id = Configure::get("Blesta.company_id");
 		$this->company = $this->Companies->get($company_id);
-		
+			
 		$this->Html = new Html();
 		
 		$buffer = '';
@@ -62,21 +61,24 @@ class HtmlInvoiceHtm extends Html {
 	}
 	
 
-	public function Output($name='doc.html', $template='default') {
-	
-		Loader::load(dirname(__FILE__) . DS . "template" . DS . $template .".php" );
-		$this->TemplateFile = new TemplateFile();
-
-
-		print_r(
-			$this->TemplateFile->FinalTemplate
-			(
-				$this->Header() , $this->HtmlDir() , $this->HtmlTitle() , $this->RtlCss() , $this->drawBackground() ,  
-				$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , $this->drawAddress() , 
-				$this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() , $this->drawPayments() ,  
-				$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn()
-			)
-		);
+	public function Output($template='default') {	
+		
+		if (file_exists(dirname(__FILE__) . DS . "template" . DS . $template .".php") ) {
+		
+			Loader::load(dirname(__FILE__) . DS . "template" . DS . $template .".php" );	
+			$this->TemplateFile = new TemplateFile();
+			print_r(
+				$this->TemplateFile->FinalTemplate
+				(
+					$this->Header() , $this->HtmlDir() , $this->HtmlTitle() , $this->RtlCss() , $this->drawBackground() ,  
+					$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , $this->drawAddress() , 
+					$this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() , $this->drawPayments() ,  
+					$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn()
+				)
+			);
+		
+		}		
+		throw new Exception("Template : " . $template . " not found");
 	}
 	
 	private function Header() {

@@ -18,7 +18,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	/**
 	 * @var string The version of this template
 	 */
-	private static $version = "1.5.0";
+	private static $version = "2.0.0";
 	/**
 	 * @var string The authors of this template
 	 */
@@ -41,6 +41,8 @@ class HtmlInvoice extends InvoiceTemplate {
 	 * @param string MIME type to use when rendering this document
 	 */
 	private $mime_type;
+	
+	private static $template = "default" ;
 	
 	/**
 	 * Loads the language to be used for this invoice
@@ -122,9 +124,9 @@ class HtmlInvoice extends InvoiceTemplate {
 	public function setMimeType($mime_type) {
 		// print_r( basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
 		if(basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) == "pdf" ) 
-			$this->mime_type = "application/pdf";
+			$this->mime_type = "download/pdf";
 		else	
-			$this->mime_type = $mime_type;
+			$this->mime_type = "application/pdf";
 			
 	}
 	
@@ -133,35 +135,29 @@ class HtmlInvoice extends InvoiceTemplate {
 	 *
 	 * @return array A list of template available
 	 */
-	private function getHtmlTemplate() {
-		$dir = dirname(__FILE__) . DS . "template" . DS ;
-		$template = array();
-		$allowed_types = array("php");
+	// private function getHtmlTemplate() {
+		// $dir = dirname(__FILE__) . DS . "template" . DS ;
+		// $template = array();
+		// $allowed_types = array("php");
 
-		$dh  = opendir($dir);		
-		while (false !== ($filename = readdir($dh))) {
-			$name = substr($filename, 0, -4);
-			$ext = substr($filename, strrpos($filename, '.') + 1);
+		// $dh  = opendir($dir);		
+		// while (false !== ($filename = readdir($dh))) {
+			// $name = substr($filename, 0, -4);
+			// $ext = substr($filename, strrpos($filename, '.') + 1);
 			
-			if(in_array($ext, array("php")))
-				$template[$name] = $name;
-		}
+			// if(in_array($ext, array("php")))
+				// $template[$name] = $name;
+		// }
 
-		asort($template);
-		return $template;
-	}
+		// asort($template);
+		// return $template;
+	// }
 	
 	/**
 	 * Returns the MIME types that this template supports for output
 	 */
 	public function supportedMimeTypes() {
-		
-		$types = array();
-		
-		$types = $this->getHtmlTemplate() ;
-		$types[] = "application/pdf";
-		
-		return $types ;
+		return array("application/pdf");
 	}
 	
 	/**
@@ -174,8 +170,6 @@ class HtmlInvoice extends InvoiceTemplate {
 		switch ($mime_type) {
 			case "application/pdf":
 				return "pdf";
-			default:
-				return "html - ". $mime_type;
 		}
 		return null;
 	}
@@ -221,7 +215,7 @@ class HtmlInvoice extends InvoiceTemplate {
 			$this->invoice = $invoice_data[$i];
 			
 			// Set the invoice data for this PDF
-			$this->pdf->invoice = $this->invoice;
+			$this->pdf->invoice  = $this->invoice;
 			$this->html->invoice = $this->invoice;	
 			
 			// Start a new page group for each individual invoice
@@ -281,11 +275,10 @@ class HtmlInvoice extends InvoiceTemplate {
 		
 		switch ($this->mime_type) {
 			case "application/pdf":
-				$this->pdf->Output($name . "." . $this->getFileExtension($this->mime_type), 'D');
-				exit;
+				$this->html->Output(self::$template);	
 				break;
-			default:
-				$this->html->Output(null , $this->mime_type );
+			case "download/pdf":
+				$this->pdf->Output($name . "." . $this->getFileExtension($this->mime_type), 'D');
 				exit;
 		}
 		
