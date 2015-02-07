@@ -42,8 +42,8 @@ class HtmlInvoiceHtm extends Html {
 	// Change This if you want ***/
 	public $include_address = true;
 	public $show_print_btn = true;
-	public $show_payment_btn = false;
 	public $show_download_btn = true;
+	public $show_payment_btn = false;	
 	
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {	
@@ -56,7 +56,6 @@ class HtmlInvoiceHtm extends Html {
 		
 		$buffer = '';
 		$this->rtl = '';		
-		$this->line_options = array( 'name' , 'qty' , 'unit_price' , 'price' );
 		
 	}
 	
@@ -148,46 +147,23 @@ class HtmlInvoiceHtm extends Html {
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);		
 		
 			return '<h1><img src="'. $base64 .'"></h1>';
-		} 
-		
-		// else {		
-			// return  $this->meta['company_name'] ;		
-		// }
-		
+		} 		
 	}	
 	
 	private function drawInvoiceType() {
 		return Language::_("HtmlInvoice.type_" . $this->invoice->status, true) ;
 	}
 
-	private function drawInvoiceInfo() {
-		$data = array(
-			array(
-				'name'=>Language::_("HtmlInvoice.invoice_id_code", true),
-				'class'=>null,
-				'value'=>$this->invoice->id_code
-			),
-			array(
-				'name'=>Language::_("HtmlInvoice.client_id_code", true),
-				'class'=>null,
-				'value'=>$this->invoice->client->id_code
-			),
-			array(
-				'name'=>Language::_("HtmlInvoice.date_billed", true),
-				'class'=>null,
-				'value'=>$this->Date->cast($this->invoice->date_billed, $this->invoice->client->settings['date_format'])
-			),
-			array(
-				'name'=>Language::_("HtmlInvoice.date_due", true),
-				'class'=>null,
-				'value'=>$this->Date->cast($this->invoice->date_due, $this->invoice->client->settings['date_format'])
-			)
-		);
+	private function drawInvoiceInfo() {	
+	
+		$buffer = array() ;
 		
-		$buffer = ''; 
-		foreach ($data as $item) {
-			$buffer .= $item['name'] . " ". $item['value'] ."\n";
-		}
+		$buffer['invoice_id'] = $this->invoice->id_code ;
+		$buffer['client_id'] = $this->invoice->client->id_code ;
+		$buffer['client_view'] = $this->invoice->client->id ;
+		$buffer['date_billed'] = $this->Date->cast($this->invoice->date_billed, $this->invoice->client->settings['date_format']) ;
+		$buffer['date_due'] = $this->Date->cast($this->invoice->date_due, $this->invoice->client->settings['date_format'])  ;
+		
 		return $buffer ;
 
 	}
@@ -256,7 +232,7 @@ class HtmlInvoiceHtm extends Html {
 	private function drawPaidWatermark() {
 		// Show paid watermark
 		if (!empty($this->meta['display_paid_watermark']) && $this->meta['display_paid_watermark'] == "true" && ($this->invoice->date_closed != null)) {			
-			return Language::_("HtmlInvoice.watermark_paid", true) ;
+			return true ;
 		}
 	}	
 
@@ -462,8 +438,7 @@ class HtmlInvoiceHtm extends Html {
 		
 	// 
 	private function Footer() {
-	
-			$footer = "" ;
+			$footer = "" ;			
 			// $footer .= $this->Html->ifSet($this->company->phone) . "\n";
 			// $footer .= $this->Html->ifSet($this->company->phax) . "\n";
 			// $footer .= $this->Html->ifSet($this->company->hostname) . "\n";

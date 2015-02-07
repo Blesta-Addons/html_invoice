@@ -17,6 +17,13 @@ class TemplateFile {
 		NOTE , The $Header include all the header 
 		*
 		*/
+		
+		if (strpos($_SERVER['REQUEST_URI'], Configure::get("Route.admin"))) {
+			$return_rl = WEBDIR . Configure::get("Route.admin") . "/clients/view/". $drawInvoiceInfo['client_view'] ."/";
+		} else {
+			$return_rl = WEBDIR . Configure::get("Route.client") ."/" ;
+		}		
+			
 		$paid_watermark = '
 				<button type="button" class="btn btn-success btn-lg active" >
 					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '. Language::_("HtmlInvoice.watermark_paid", true).'
@@ -77,11 +84,14 @@ class TemplateFile {
 					<header class="header">
 						<div class="row">
 							<div class="col-xs-6">
-								'. $drawLogo .'								
+								<div class="thumbnail">'. $drawLogo .'</div>
 							</div>
 							<div class="col-xs-6 text-right flip ">
 								<h1>'. $drawInvoiceType .'</h1>
-								'. nl2br($drawInvoiceInfo) .'
+								'. Language::_("HtmlInvoice.invoice_id_code", true) . $drawInvoiceInfo['invoice_id'] .'<br />
+								'. Language::_("HtmlInvoice.client_id_code", true) . $drawInvoiceInfo['client_id'] .'<br />
+								'. Language::_("HtmlInvoice.date_billed", true) . $drawInvoiceInfo['date_billed'] .'<br />
+								'. Language::_("HtmlInvoice.date_due", true) . $drawInvoiceInfo['date_due'] .'<br />
 							</div>
 						</div>
 						<div class="row">
@@ -157,7 +167,7 @@ class TemplateFile {
 					</footer>
 					<nav>
 						<ul class="pager">
-							<li><a href="#"><span aria-hidden="true">&larr;</span> '. Language::_("HtmlInvoice.back", true) .'</a></li>
+							<li><a href="'. $return_rl .'"><span aria-hidden="true">&larr;</span> '. Language::_("HtmlInvoice.back", true) .'</a></li>
 							<li><a href="'.$_SERVER['REQUEST_URI'].'/pdf/">'. Language::_("HtmlInvoice.download_invoice", true) .'</a></li>
 							<li><a href="#">'. Language::_("HtmlInvoice.close", true) .'</a></li>
 						</ul>
