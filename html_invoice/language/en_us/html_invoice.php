@@ -32,7 +32,10 @@ $lang['HtmlInvoice.from'] = "From : ";
 $lang['HtmlInvoice.to'] = "Billed To : ";
 $lang['HtmlInvoice.print_invoice'] = "Print Invoice";
 $lang['HtmlInvoice.download_invoice'] = "Download Invoice (PDF)";
+$lang['HtmlInvoice.add_payment'] = "Add Payment";
 $lang['HtmlInvoice.pay_invoice'] = "Make Payment";
+$lang['HtmlInvoice.record_invoice'] = "Record Payment";
+$lang['HtmlInvoice.edit_invoice'] = "Edit Invoice";
 $lang['HtmlInvoice.back'] = "Back to Client Area";
 $lang['HtmlInvoice.close'] = "Close Window";
 ?>

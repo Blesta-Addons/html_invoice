@@ -18,7 +18,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	/**
 	 * @var string The version of this template
 	 */
-	private static $version = "2.1.1";
+	private static $version = "2.1.5";
 	/**
 	 * @var string The authors of this template
 	 */
@@ -170,6 +170,8 @@ class HtmlInvoice extends InvoiceTemplate {
 		switch ($mime_type) {
 			case "application/pdf":
 				return "pdf";
+			case "download/pdf":
+				return "pdf";				
 		}
 		return null;
 	}

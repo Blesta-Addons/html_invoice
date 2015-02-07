@@ -43,7 +43,8 @@ class HtmlInvoiceHtm extends Html {
 	public $include_address = true;
 	public $show_print_btn = true;
 	public $show_download_btn = true;
-	public $show_payment_btn = false;	
+	public $show_payment_btn = true;	
+	public $show_edit_btn = true;	
 	
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {	
@@ -71,7 +72,7 @@ class HtmlInvoiceHtm extends Html {
 					$this->Header() , $this->HtmlDir() , $this->HtmlTitle() , $this->RtlCss() , $this->drawBackground() ,  
 					$this->drawLogo() , $this->drawPaidWatermark() , $this->drawInvoiceType() , $this->drawInvoiceInfo() , $this->drawReturnAddress() , $this->drawAddress() , 
 					$this->drawLineHeader() , $this->drawInvoice() , $this->SubTotals() , $this->Taxes() , $this->Totals() , $this->PublicNotes() , $this->drawPayments() ,  
-					$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn()
+					$this->drawTerms() ,  $this->Footer() , $this->PrintBtn() , $this->DownloadBtn() , $this->PaymentBtn() ,  $this->EditBtn()
 				)
 			);
 		}		
@@ -146,7 +147,7 @@ class HtmlInvoiceHtm extends Html {
 			$data = file_get_contents($this->meta['logo']);
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);		
 		
-			return '<img src="'. $base64 .'">';
+			return '<img src="'. $base64 .'" />';
 		} 		
 	}	
 	
@@ -159,6 +160,7 @@ class HtmlInvoiceHtm extends Html {
 		$buffer = array() ;
 		
 		$buffer['invoice_id'] = $this->invoice->id_code ;
+		$buffer['invoice_view'] = $this->invoice->id ;
 		$buffer['client_id'] = $this->invoice->client->id_code ;
 		$buffer['client_view'] = $this->invoice->client->id ;
 		$buffer['date_billed'] = $this->Date->cast($this->invoice->date_billed, $this->invoice->client->settings['date_format']) ;
@@ -435,8 +437,13 @@ class HtmlInvoiceHtm extends Html {
 			return true;	
 		}
 	}	
-		
-	// 
+	
+	private function EditBtn() {
+		if ( ($this->show_edit_btn) && (empty($this->invoice->date_closed) )){
+			return true;	
+		}
+	}
+	
 	private function Footer() {
 			$footer = "" ;			
 			// $footer .= $this->Html->ifSet($this->company->phone) . "\n";
