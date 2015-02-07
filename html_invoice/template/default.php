@@ -83,10 +83,12 @@ class TemplateFile {
 				<div class="container">				
 					<header class="header">
 						<div class="row">
-							<div class="col-xs-6">
-								<div class="thumbnail">'. $drawLogo .'</div>
+							<div class="col-xs-5 ">
+								<div class="thumbnail">
+									<div class=" text-left">'. $drawLogo .'</div>
+								</div>
 							</div>
-							<div class="col-xs-6 text-right flip ">
+							<div class="col-xs-5 col-xs-offset-2 text-right flip ">
 								<h1>'. $drawInvoiceType .'</h1>
 								'. Language::_("HtmlInvoice.invoice_id_code", true) . $drawInvoiceInfo['invoice_id'] .'<br />
 								'. Language::_("HtmlInvoice.client_id_code", true) . $drawInvoiceInfo['client_id'] .'<br />

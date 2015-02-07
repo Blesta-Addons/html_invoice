@@ -146,7 +146,7 @@ class HtmlInvoiceHtm extends Html {
 			$data = file_get_contents($this->meta['logo']);
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);		
 		
-			return '<h1><img src="'. $base64 .'"></h1>';
+			return '<img src="'. $base64 .'">';
 		} 		
 	}	
 	
