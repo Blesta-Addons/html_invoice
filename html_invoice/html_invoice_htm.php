@@ -49,6 +49,7 @@ class HtmlInvoiceHtm extends Html {
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {	
 			
+		Language::loadLang("html_invoice", null, dirname(__FILE__) . DS . "language" . DS);	
 		Loader::loadModels($this, array("Companies", "Transactions"));
 		$company_id = Configure::get("Blesta.company_id");
 		$this->company = $this->Companies->get($company_id);

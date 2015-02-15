@@ -1,0 +1,31 @@
+<?php
+$lang['PdfInvoice.name'] = "HTML";
+$lang['PdfInvoice.page_of'] = "Page %1\$s of %2\$s"; // %1$s is the current page number, %2$s is the total number of pages
+$lang['PdfInvoice.terms_heading'] = "Terms";
+$lang['PdfInvoice.type_active'] = "INVOICE";
+$lang['PdfInvoice.type_draft'] = "INVOICE - DRAFT";
+$lang['PdfInvoice.type_void'] = "INVOICE - VOID";
+$lang['PdfInvoice.type_proforma'] = "PROFORMA";
+$lang['PdfInvoice.invoice_id_code'] = " Number:";
+$lang['PdfInvoice.client_id_code'] = "Customer Number:";
+$lang['PdfInvoice.tax_id'] = "Tax ID/VATIN:";
+$lang['PdfInvoice.client_tax_id'] = "Customer Tax ID/VATIN:";
+$lang['PdfInvoice.date_billed'] = "Invoice Date:";
+$lang['PdfInvoice.date_due'] = "Due Date:";
+$lang['PdfInvoice.notes_heading'] = "Notes";
+$lang['PdfInvoice.subtotal_heading'] = "Subtotal";
+$lang['PdfInvoice.tax_heading'] = "%1\$s (%2\$s%%)"; // %1$s is the tax name, %2$s is the tax rate, %% escapes the percent (%) sign so it can be displayed
+$lang['PdfInvoice.total_heading'] = "Total";
+$lang['PdfInvoice.lines_description'] = "Description";
+$lang['PdfInvoice.lines_quantity'] = "Quantity";
+$lang['PdfInvoice.lines_unit_price'] = "Unit Price";
+$lang['PdfInvoice.lines_cost'] = "Cost";
+$lang['PdfInvoice.watermark_paid'] = "PAID";
+$lang['PdfInvoice.watermark_unpaid'] = "UNPAID";
+$lang['PdfInvoice.payments_heading'] = "Payments";
+$lang['PdfInvoice.payments_applied_date'] = "Date Applied";
+$lang['PdfInvoice.payments_type_name'] = "Type";
+$lang['PdfInvoice.payments_transaction_id'] = "Transaction Number";
+$lang['PdfInvoice.payments_applied_amount'] = "Amount Applied";
+$lang['PdfInvoice.balance_heading'] = "Balance";
+?>

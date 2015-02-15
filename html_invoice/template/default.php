@@ -110,44 +110,52 @@ class TemplateFile {
 				<div class="container">				
 					<header class="header">
 						<div class="row">
-							<div class="col-xs-5 ">
+							<div class="col-md-5 col-xs-12 ">
 								<div class="thumbnail">
 									<div class=" text-left">'. $drawLogo .'</div>
 								</div>
 							</div>
-							<div class="col-xs-5 col-xs-offset-2 text-right flip ">
+							<div class="col-md-5 col-xs-12 col-md-offset-2 text-right flip ">
 								<h1>'. $drawInvoiceType .'</h1>
-								'. Language::_("HtmlInvoice.invoice_id_code", true) . $drawInvoiceInfo['invoice_id'] .'<br />
-								'. Language::_("HtmlInvoice.client_id_code", true) . $drawInvoiceInfo['client_id'] .'<br />
-								'. Language::_("HtmlInvoice.date_billed", true) . $drawInvoiceInfo['date_billed'] .'<br />
-								'. Language::_("HtmlInvoice.date_due", true) . $drawInvoiceInfo['date_due'] .'<br />
+								<div class="row">
+									<div class="col-md-8 col-md-offset-4 col-xs-12">
+										<dl class="dl-horizontal">
+											<dt>'. $drawInvoiceType . Language::_("HtmlInvoice.invoice_id_code", true) .'</dt>
+											<dd>'. $drawInvoiceInfo['invoice_id'] .'</dd>
+											<dt>'. Language::_("HtmlInvoice.client_id_code", true) .'</dt>
+											<dd>'. $drawInvoiceInfo['client_id'] .'</dd>
+											<dt>'. Language::_("HtmlInvoice.date_billed", true) .'</dt>
+											<dd>'. $drawInvoiceInfo['date_billed'] .'</dd>
+											<dt>'. Language::_("HtmlInvoice.date_due", true) .'</dt>
+											<dd>'. $drawInvoiceInfo['date_due'] .'</dd>									
+										</dl>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-5">
+							<div class="col-md-5 col-xs-12 ">
 								'. $drawReturnAddress .' 
 							</div>
-							<div class="col-xs-5 col-xs-offset-2 text-right">
+							<div class="col-md-5 col-xs-12  col-md-offset-2 text-right">
 								'. $drawAddress .'
 							</div>
 						</div>
 						<!-- / end client details section -->
 						<div class="row">
-								<div class="col-xs-10 ">									
+								<div class="col-xs-12 ">									
 									'. ($PaymentBtn ? $payment_btn : "" ) .'
 									'. ($EditBtn ? $edit_btn : "" ) .'
 									'. ($PrintBtn ? $print_btn : "" ) .'
 									'. ($DownloadBtn ? $download_btn : "" ) .'
-								</div>						
-								<div class="col-xs-2 text-right">									
-									'. ($drawPaidWatermark ? $paid_watermark : $unpaid_watermark ) .'									
+									<p class="pull-right flip">							
+										'. ($drawPaidWatermark ? $paid_watermark : $unpaid_watermark ) .'									
+									</p>									
 								</div>
 						</div>
 						
 					</header>
-					<div class="content">
-
-						
+					<div class="content">						
 						<table class="table table-hover table-bordered">
 							<thead>
 								<tr class="active">'. $drawLineHeader .'</tr>
@@ -171,20 +179,11 @@ class TemplateFile {
 							
 						</table>
 						
-						<div class="row ">
-							<div class="col-xs-2 col-xs-offset-6">
-									
-							</div>
-							<div class="col-xs-4 text-right">
-
-							</div>
-						</div>
-						
 						<div class="row">
-							<div class="col-xs-5">
+							<div class="col-md-5 col-xs-12">
 								'. $PublicNotes .'
 							</div>
-							<div class="col-xs-7">
+							<div class="col-md-7 col-xs-12">
 								'. $drawPayments .'	
 							</div>
 						</div>

@@ -18,7 +18,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	/**
 	 * @var string The version of this template
 	 */
-	private static $version = "2.1.5";
+	private static $version = "2.1.7";
 	/**
 	 * @var string The authors of this template
 	 */
@@ -49,7 +49,7 @@ class HtmlInvoice extends InvoiceTemplate {
 	 */
 	public function __construct() {		
 		// Load language for this template
-		Language::loadLang("html_invoice", null, dirname(__FILE__) . DS . "language" . DS);
+		Language::loadLang("template_invoice", null, dirname(__FILE__) . DS . "language" . DS);
 	
 	}
 
@@ -129,29 +129,6 @@ class HtmlInvoice extends InvoiceTemplate {
 			$this->mime_type = "application/pdf";
 			
 	}
-	
-	/**
-	 * Returns all templates available to the HTML library
-	 *
-	 * @return array A list of template available
-	 */
-	// private function getHtmlTemplate() {
-		// $dir = dirname(__FILE__) . DS . "template" . DS ;
-		// $template = array();
-		// $allowed_types = array("php");
-
-		// $dh  = opendir($dir);		
-		// while (false !== ($filename = readdir($dh))) {
-			// $name = substr($filename, 0, -4);
-			// $ext = substr($filename, strrpos($filename, '.') + 1);
-			
-			// if(in_array($ext, array("php")))
-				// $template[$name] = $name;
-		// }
-
-		// asort($template);
-		// return $template;
-	// }
 	
 	/**
 	 * Returns the MIME types that this template supports for output

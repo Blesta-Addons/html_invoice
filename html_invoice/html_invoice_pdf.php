@@ -84,6 +84,8 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false, $font=null) {
 		
+		Language::loadLang("pdf_invoice", null, dirname(__FILE__) . DS . "language" . DS);
+		
 		// Invoke the parent constructor
 		parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
 		
@@ -257,7 +259,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	private function setFontInfo($font) {
 		$lang = array();
 		$lang['a_meta_charset'] = 'UTF-8';
-		$lang['a_meta_dir'] = Language::_("AppController.lang.dir", true) ? Language::_("AppController.lang.dir", true) : 'ltr';
+		$lang['a_meta_dir'] = 'ltr' ;
 		
 		// Set language settings
 		$this->setLanguageArray($lang);
@@ -289,7 +291,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 			);
 			
 			$data = array(
-				array('col'=>Language::_("HtmlInvoice.watermark_paid", true))
+				array('col'=>Language::_("PdfInvoice.watermark_paid", true))
 			);
 			
 			// Set paid background text color
@@ -338,7 +340,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 			$note_options['y_pos'] += 4.5;
 			
 			$data = array(
-				array(Language::_("HtmlInvoice.notes_heading", true)),
+				array(Language::_("PdfInvoice.notes_heading", true)),
 				array($this->invoice->note_public)
 			);
 			// Draw notes
@@ -350,14 +352,14 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 		
 		// Set subtitle
 		$data = array(
-			array('notes'=>null,'label'=>Language::_("HtmlInvoice.subtotal_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options))
+			array('notes'=>null,'label'=>Language::_("PdfInvoice.subtotal_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->subtotal, $this->invoice->currency, self::$standard_num_options))
 		);
 		// Set all taxes
 		foreach ($this->invoice->taxes as $tax) {
-			$data[] = array('notes'=>null,'label'=>Language::_("HtmlInvoice.tax_heading", true, $tax->name, $tax->amount),'price'=>$this->CurrencyFormat->format($tax->tax_total, $this->invoice->currency, self::$standard_num_options));
+			$data[] = array('notes'=>null,'label'=>Language::_("PdfInvoice.tax_heading", true, $tax->name, $tax->amount),'price'=>$this->CurrencyFormat->format($tax->tax_total, $this->invoice->currency, self::$standard_num_options));
 		}
 		// Set total
-		$data[] = array('notes'=>null,'label'=>Language::_("HtmlInvoice.total_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->total, $this->invoice->currency));
+		$data[] = array('notes'=>null,'label'=>Language::_("PdfInvoice.total_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->total, $this->invoice->currency));
 
 		
 		$options['row'] = array('label'=>array('border'=>'R'), 'price'=>array('border'=>0));
@@ -417,7 +419,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	 */
 	private function drawPaymentHeader() {
 		// Add a heading above the table
-		$this->drawTableHeading(Language::_("HtmlInvoice.payments_heading", true));
+		$this->drawTableHeading(Language::_("PdfInvoice.payments_heading", true));
 		
 		// Use the same options as line items
 		$options = $this->payment_options;
@@ -428,10 +430,10 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 		$options['row'] = array(array('font_size'=>self::$font_size_alt2,'fill_color'=>self::$primary_text_color, 'border'=>"0",'align'=>'C','text_color'=>array(255,255,255)));
 		
 		$header = array(array(
-			'applied_date' => Language::_("HtmlInvoice.payments_applied_date", true),
-			'type_name' => Language::_("HtmlInvoice.payments_type_name", true),
-			'transaction_id' => Language::_("HtmlInvoice.payments_transaction_id", true),
-			'applied_amount' => Language::_("HtmlInvoice.payments_applied_amount", true)
+			'applied_date' => Language::_("PdfInvoice.payments_applied_date", true),
+			'type_name' => Language::_("PdfInvoice.payments_type_name", true),
+			'transaction_id' => Language::_("PdfInvoice.payments_transaction_id", true),
+			'applied_amount' => Language::_("PdfInvoice.payments_applied_amount", true)
 		));
 		
 		$this->drawTable($header, $options);
@@ -470,7 +472,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 			$this->drawTable($rows, $options);
 			
 			// Set balance due at bottom of table
-			$data = array(array('blank'=>"",'label'=>Language::_("HtmlInvoice.balance_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->due, $this->invoice->currency)));
+			$data = array(array('blank'=>"",'label'=>Language::_("PdfInvoice.balance_heading", true),'price'=>$this->CurrencyFormat->format($this->invoice->due, $this->invoice->currency)));
 			
 			$options['y_pos'] = max($this->table_heading_y_pos, $this->header_end_y, $this->GetY());
 			$options['row'] = array('blank'=>array('border'=>0));
@@ -554,14 +556,14 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 		
 		if (isset($this->meta['tax_id']) && $this->meta['tax_id'] != "") {
 			$data[] = array(
-				'name'=>Language::_("HtmlInvoice.tax_id", true),
+				'name'=>Language::_("PdfInvoice.tax_id", true),
 				'space'=>null,
 				'value'=>$this->meta['tax_id']
 			);
 		}
 		if (isset($this->invoice->client->settings['tax_id']) && $this->invoice->client->settings['tax_id'] != "") {
 			$data[] = array(
-				'name'=>Language::_("HtmlInvoice.client_tax_id", true),
+				'name'=>Language::_("PdfInvoice.client_tax_id", true),
 				'space'=>null,
 				'value'=>$this->invoice->client->settings['tax_id']
 			);
@@ -577,22 +579,22 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	private function drawInvoiceInfo() {
 		$data = array(
 			array(
-				'name'=>Language::_("HtmlInvoice.invoice_id_code", true),
+				'name'=>Language::_("PdfInvoice.type_" . $this->invoice->status, true) . Language::_("PdfInvoice.invoice_id_code", true),
 				'space'=>null,
 				'value'=>$this->invoice->id_code
 			),
 			array(
-				'name'=>Language::_("HtmlInvoice.client_id_code", true),
+				'name'=>Language::_("PdfInvoice.client_id_code", true),
 				'space'=>null,
 				'value'=>$this->invoice->client->id_code
 			),
 			array(
-				'name'=>Language::_("HtmlInvoice.date_billed", true),
+				'name'=>Language::_("PdfInvoice.date_billed", true),
 				'space'=>null,
 				'value'=>$this->Date->cast($this->invoice->date_billed, $this->invoice->client->settings['date_format'])
 			),
 			array(
-				'name'=>Language::_("HtmlInvoice.date_due", true),
+				'name'=>Language::_("PdfInvoice.date_due", true),
 				'space'=>null,
 				'value'=>$this->Date->cast($this->invoice->date_due, $this->invoice->client->settings['date_format'])
 			)
@@ -627,10 +629,10 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 		$options['row']= array(array('font_size'=>self::$font_size_alt2,'fill_color'=>self::$primary_text_color, 'border'=>"0",'align'=>'C','text_color'=>array(255,255,255)));
 		
 		$header = array(array(
-			'name'=>Language::_("HtmlInvoice.lines_description", true),
-			'qty'=>Language::_("HtmlInvoice.lines_quantity", true),
-			'unit_price'=>Language::_("HtmlInvoice.lines_unit_price", true),
-			'price'=>Language::_("HtmlInvoice.lines_cost", true)
+			'name'=>Language::_("PdfInvoice.lines_description", true),
+			'qty'=>Language::_("PdfInvoice.lines_quantity", true),
+			'unit_price'=>Language::_("PdfInvoice.lines_unit_price", true),
+			'price'=>Language::_("PdfInvoice.lines_cost", true)
 		));
 		
 		$this->drawTable($header, $options);
@@ -686,7 +688,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	 */
 	private function drawInvoiceType() {
 		$data = array(
-			array(Language::_("HtmlInvoice.type_" . $this->invoice->status, true))
+			array(Language::_("PdfInvoice.type_" . $this->invoice->status, true))
 		);
 		$options = array(
 			'font_size'=>self::$font_size_alt3,
@@ -703,7 +705,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	 */
 	private function drawPageNumber() {
 		$data = array(
-			array(Language::_("HtmlInvoice.page_of", true, $this->getGroupPageNo(), $this->getPageGroupAlias()))
+			array(Language::_("PdfInvoice.page_of", true, $this->getGroupPageNo(), $this->getPageGroupAlias()))
 		);
 		$options = array(
 			'font_size'=>self::$font_size_alt,
@@ -719,7 +721,7 @@ class HtmlInvoicePdf extends TcpdfWrapper {
 	 */
 	private function drawTerms() {
 		$data = array(
-			array(Language::_("HtmlInvoice.terms_heading", true)),
+			array(Language::_("PdfInvoice.terms_heading", true)),
 			array($this->meta['terms'])
 		);
 		$options = array(

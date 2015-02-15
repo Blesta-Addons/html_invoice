@@ -1,0 +1,41 @@
+<?php
+$lang['HtmlInvoice.page_of'] = "صفحة  %1\$s من %2\$s"; // %1$s is the current page number, %2$s is the total number of pages
+$lang['HtmlInvoice.terms_heading'] = "القوانين";
+$lang['HtmlInvoice.type_active'] = "فاتورة";
+$lang['HtmlInvoice.type_draft'] = "فاتورة - مسودة";
+$lang['HtmlInvoice.type_void'] = "فاتورة - مفرغة";
+$lang['HtmlInvoice.type_proforma'] = "نموذج طلب ";
+$lang['HtmlInvoice.invoice_id_code'] = " رقم :";
+$lang['HtmlInvoice.client_id_code'] = "رقم العميل :";
+$lang['HtmlInvoice.tax_id'] = "Tax ID/VATIN :";
+$lang['HtmlInvoice.client_tax_id'] = "Customer Tax ID/VATIN :";
+$lang['HtmlInvoice.date_billed'] = "تاريخ الفاتورة :";
+$lang['HtmlInvoice.date_due'] = "آخر أجل للدفع :";
+$lang['HtmlInvoice.notes_heading'] = "ملاحظات";
+$lang['HtmlInvoice.subtotal_heading'] = "المبلغ الاجمالي";
+$lang['HtmlInvoice.tax_heading'] = "%1\$s (%2\$s%%)"; // %1$s is the tax name, %2$s is the tax rate, %% escapes the percent (%) sign so it can be displayed
+$lang['HtmlInvoice.total_heading'] = "الواجب أدائه";
+$lang['HtmlInvoice.lines_description'] = "المنتجات / الخدمات";
+$lang['HtmlInvoice.lines_quantity'] = "الكمية";
+$lang['HtmlInvoice.lines_unit_price'] = "سعر الوحدة";
+$lang['HtmlInvoice.lines_cost'] = "المجموع";
+$lang['HtmlInvoice.watermark_paid'] = "الفاتورة مدفوعة";
+$lang['HtmlInvoice.watermark_unpaid'] = "غير مدفوعة";
+$lang['HtmlInvoice.payments_heading'] = "الدفعات";
+$lang['HtmlInvoice.payments_applied_date'] = "تاريخ الدفعة";
+$lang['HtmlInvoice.payments_type_name'] = "نوع";
+$lang['HtmlInvoice.payments_transaction_id'] = "رقم العملية";
+$lang['HtmlInvoice.payments_applied_amount'] = "المبلغ المدفوع";
+$lang['HtmlInvoice.balance_heading'] = "الباقي";
+// new Version
+$lang['HtmlInvoice.from'] = "من : ";
+$lang['HtmlInvoice.to'] = "المستفيد : ";
+$lang['HtmlInvoice.print_invoice'] = "طبع الفاتورة";
+$lang['HtmlInvoice.download_invoice'] = "تحميل الفاتورة (PDF)";
+$lang['HtmlInvoice.add_payment'] = "أضف دفع";
+$lang['HtmlInvoice.pay_invoice'] = "قم بالدفع";
+$lang['HtmlInvoice.record_invoice'] = "تسجيل دفع";
+$lang['HtmlInvoice.edit_invoice'] = "تعديل الفاتورة";
+$lang['HtmlInvoice.back'] = "الرجوع لمنطقة العملاء";
+$lang['HtmlInvoice.close'] = "غلق الصفحة";
+?>
